@@ -51,6 +51,14 @@
   text-align: center;
 }
 
+.product-item__form {
+  margin-top: 8px;
+}
+
+.product-item__add-to-cart {
+  cursor: pointer !important;
+}
+
 @media (min-width: 1200px) {
   .product-items {
     padding: 60px 80px;

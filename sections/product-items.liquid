@@ -21,6 +21,18 @@
         }}
         <h2 class="product-item__title">{{ product.title | truncate: 33 }}</h2>
         <p class="product-item__price">{{ product.price | money }}</p>
+        {% if product.variants.size > 0 %}
+          <form
+            method="post"
+            action="{{ routes.cart_add_url }}"
+            class="product-item__form">
+            <input
+              type="hidden"
+              name="id"
+              value="{{ product.variants.first.id }}">
+            <button type="submit" class="product-item__add-to-cart product-form__submit button button--full-width button--secondary">Add to cart</button>
+          </form>
+        {% endif %}
       </a>
     </div>
   {% endfor %}
