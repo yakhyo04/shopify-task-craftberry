@@ -1,0 +1,48 @@
+{{ 'product-items.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-items.js' |  asset_url }}" defer></script>
+
+{% assign selected_collection = collections[section.settings.selected_collection] %}
+{% assign sorted_products = selected_collection.products | sort: 'price' | reverse %}
+{% assign top_products = sorted_products | slice: 0, 4 %}
+
+<section class="product-items">
+  {% for product in top_products %}
+    <div class="product-item" data-product-id="{{ product.id }}">
+      {% if product.tags != blank %}
+        <div class="product-tags">
+          {% for item in product.tags %}
+            <span class="product-tag">{{ item }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <a href="{{ product.url }}" class="product-item__link">
+        {{
+          product.featured_image | image_url: width: 300 | image_tag: sizes: "100vw", widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840', class: "product-item__image image-lazy"
+        }}
+        <h2 class="product-item__title">{{ product.title | truncate: 33 }}</h2>
+        <p class="product-item__price">{{ product.price | money }}</p>
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
+{% schema %}
+  {
+    "name": "Product Items",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "selected_collection",
+        "label": "Choose a collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product Items",
+        "settings": {
+          "selected_collection": "frontpage"
+        }
+      }
+    ]
+  }
+{% endschema %}

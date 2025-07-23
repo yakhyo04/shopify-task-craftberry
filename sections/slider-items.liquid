@@ -1,0 +1,84 @@
+{{ 'section-slider-items.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-slider-items.js' | asset_url }}" defer></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+<section class="slider-items" style="background-image: url('{{ section.settings.background_image | image_url: width: 1500 }}');">
+  <div class="slider-items__wrapper">
+    <div class="slider-items__content">
+      <h3 class="slider-items__title">{{ section.settings.title }}</h3>
+      <p class="slider-items__description">{{ section.settings.subtitle }}</p>
+      <div class="slider-items__circle">
+        <p id="text" data-text="{{ section.settings.circle_text }}"></p>
+      </div>
+    </div>
+    <div class="slider-items__swiper swiper" data-slider-id="{{ section.id }}">
+      <div class="slider-items__images swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.settings.image != blank %}
+            <div class="slider-items__image--wrapper swiper-slide" {{ block.shopify_attributes }}>
+              {{ block.settings.image | image_url: width: 1200 | image_tag: sizes: "100vw", widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840', class: "slider-items__image image-lazy"
+              }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Slider Items",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image"
+      }, {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Our jewelry"
+      }, {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subtitle",
+        "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      }, {
+        "type": "text",
+        "id": "circle_text",
+        "label": "Circle Text",
+        "default": "We're the bestie you can be with."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Slider Items",
+        "settings": {},
+        "blocks": [
+          {
+            "type": "image"
+          }, {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
